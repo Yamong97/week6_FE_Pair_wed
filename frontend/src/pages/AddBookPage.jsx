@@ -91,7 +91,7 @@ const AddBookPage = () => {
         onChange = {(e) => setGenre (e.target.value)} />
 
         <label>Available:</label>
-        <select value = {isAvailable} onchange = {(e) => setIsAvailable (e.target.value)}>
+        <select value = {isAvailable} onChange = {(e) => setIsAvailable (e.target.value)}>
           <option value="true">Yes</option>
           <option value="false">No</option>
         </select>

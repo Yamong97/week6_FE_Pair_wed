@@ -78,6 +78,7 @@ const BookPage = () => {
 
           <button onClick={() => navigate("/")}>Back</button>
           <button onClick ={() => onDeleteClick(book._id)}>delete</button>
+          <button onClick={() => navigate(`/edit-book/${book._id}`)}>Edit</button>
         </>
       )}
     </div>
