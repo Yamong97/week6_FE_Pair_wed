@@ -1,8 +1,9 @@
 
 import {Link} from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({isAuthenticated, setIsAuthenticated}) => {
   const handleClick = () => {
+    setIsAuthenticated(false);
     localStorage.removeItem("user");
   };
   return (
@@ -12,12 +13,20 @@ const Navbar = () => {
       </Link>
 
       <div className="links">
-        <div>
-          <Link to = "/books/add-book">Add Book</Link>
-          <Link to = "/Login"> Login</Link>
-          <Link to = "/Signup"> Signup</Link>
-          <button onClick = {handleClick}>Log out</button>
-        </div>
+        {isAuthenticated && (
+          <div>
+
+            <Link to = "/books/add-book">Add Book</Link>
+            <span>{JSON.parse(localStorage.getItem("user")).email}</span>
+            <button onClick = {handleClick}>Log out</button>
+          </div>
+        )}
+        {!isAuthenticated && (
+          <div>
+            <Link to = "/Login"> Login</Link>
+            <Link to = "/Signup"> Signup</Link>
+          </div>
+        )}
       </div>
     </nav>
   );

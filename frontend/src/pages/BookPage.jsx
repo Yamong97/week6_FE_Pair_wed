@@ -1,13 +1,35 @@
 
-import { Link, useParams, useNavigate } from "react-router-dom";
+import {useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-const BookPage = () => {
+const BookPage = ({isAuthenticated}) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user ? user.token : null;
+
+  const deleteBook = async (bookId) => {
+    try {
+      const res = await fetch (`/api/books/${bookId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error (`Failed to delete book: ${errorText}`);
+      }
+      console.log("Book deleted successfully");
+      navigate("/");
+    } catch (error) {
+      console.error ("Error for deleting book: ", error);
+    }
+  };
 
 
   useEffect(() => {
@@ -29,31 +51,14 @@ const BookPage = () => {
     fetchBook();
   }, [id]);
 
-  // const handleGoHome = () => {
-  //   navigate("/");
-  // };
-
-
-
-  const deleteBook = async (bookId) => {
-    try {
-      const res = await fetch (`/api/books/${bookId}`, {
-        method: "DELETE",
-      });
-      if (!res.ok) throw new Error ("Failed to delete book");
-    } catch (error) {
-      console.error ("Error for deleting book: ", error);
-    }
-  };
 
   const onDeleteClick = (bookId) => {
     const confirm = window.confirm ("Are you sure you want to delete this book? ");
     if (!confirm) return;
     deleteBook(bookId);
-    navigate("/");
+    // navigate("/");
 
   };
-
 
 
   return (
@@ -76,9 +81,15 @@ const BookPage = () => {
           <p>Due Date: {book.availability.dueDate ? new Date(book.availability.dueDate).toLocaleDateString():"-"}</p>
           <p>Borrower: {book.availability.borrower || "_"}</p>
 
-          <button onClick={() => navigate("/")}>Back</button>
-          <button onClick ={() => onDeleteClick(book._id)}>delete</button>
-          <button onClick={() => navigate(`/edit-book/${book._id}`)}>Edit</button>
+          {/* <button onClick={() => navigate("/")}>Back</button> */}
+
+          {isAuthenticated && (
+            <>
+          
+              <button onClick ={() => onDeleteClick(book._id)}>delete</button>
+              <button onClick={() => navigate(`/edit-book/${book._id}`)}>Edit</button>
+            </>
+          )}
         </>
       )}
     </div>

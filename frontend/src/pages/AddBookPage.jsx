@@ -11,7 +11,9 @@ const AddBookPage = () => {
   const [isAvailable, setIsAvailable] = useState ("");
   const [dueDate, setDueDate] = useState ("");
   const [borrower, setBorrower] = useState ("");
-
+  
+  const user = JSON.parase(localStorage.getItem ("user"));
+  const token = user ? user.token : null;
 
   const navigate = useNavigate();
 
@@ -19,13 +21,17 @@ const AddBookPage = () => {
     try {
       const res = await fetch ("/api/books", {
         method: "POST",
-        headers: { "Content-type" : "application/json"},
+        headers: { "Content-type" : "application/json",
+        Authorization: `Bearer ${token}`,
+      },
         body: JSON.stringify(newBook),
       });
       
       if (!res.ok) throw new Error ("Failed to add book");
+      return true;
     }catch (error) {
       console.error (error);
+      return false;
     }
   };
 

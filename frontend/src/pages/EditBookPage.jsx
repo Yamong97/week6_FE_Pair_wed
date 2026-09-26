@@ -16,6 +16,9 @@ const EditBookPage = () => {
   const [borrower, setBorrower] = useState("");
   const [loading, setLoading] = useState(true);
 
+  const user = JSON.parse (localStorage.getItem("user"));
+  const token = user ? user.token : null;
+
 
   useEffect(() => {
     const fetchBook = async () => {
@@ -45,7 +48,9 @@ const EditBookPage = () => {
     try {
       const res = await fetch(`/api/books/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", 
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(book),
 
       });
