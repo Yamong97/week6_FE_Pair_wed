@@ -1,5 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import EditBookPage from "./pages/EditBookPage";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // pages & components
 import Home from "./pages/HomePage";
@@ -7,6 +6,9 @@ import AddBookPage from "./pages/AddBookPage";
 import Navbar from "./components/Navbar";
 import NotFoundPage from "./pages/NotFoundPage";
 import BookPage from "./pages/BookPage";
+import EditBookPage from "./pages/EditBookPage";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
 
 
 const App = () => {
@@ -18,9 +20,12 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/add-book" element={<AddBookPage />} />
-            <Route path="*" element={<NotFoundPage />} />
+            
             <Route path="/books/:id" element = {<BookPage/>}/>
             <Route path="/edit-book/:id" element = {<EditBookPage/>}/>
+            <Route path = "/Login" element = {<Login/>}/>
+            <Route path = "/Signup" element = {<Signup/>}/>
+            <Route path="*" element={<NotFoundPage />} />
             
           </Routes>
         </div>

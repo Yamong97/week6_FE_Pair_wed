@@ -1,10 +1,23 @@
+
+import {Link} from "react-router-dom";
+
 const Navbar = () => {
+  const handleClick = () => {
+    localStorage.removeItem("user");
+  };
   return (
     <nav className="navbar">
+      <Link to = "/">
       <h1>Book Library</h1>
+      </Link>
+
       <div className="links">
-        <a href="/">Home</a>
-        <a href="/add-book">Add Book</a>
+        <div>
+          <Link to = "/books/add-book">Add Book</Link>
+          <Link to = "/Login"> Login</Link>
+          <Link to = "/Signup"> Signup</Link>
+          <button onClick = {handleClick}>Log out</button>
+        </div>
       </div>
     </nav>
   );
