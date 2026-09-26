@@ -29,9 +29,32 @@ const BookPage = () => {
     fetchBook();
   }, [id]);
 
-  const handleGoHome = () => {
-    navigate("/");
+  // const handleGoHome = () => {
+  //   navigate("/");
+  // };
+
+
+
+  const deleteBook = async (bookId) => {
+    try {
+      const res = await fetch (`/api/books/${bookId}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error ("Failed to delete book");
+    } catch (error) {
+      console.error ("Error for deleting book: ", error);
+    }
   };
+
+  const onDeleteClick = (bookId) => {
+    const confirm = window.confirm ("Are you sure you want to delete this book? ");
+    if (!confirm) return;
+    deleteBook(bookId);
+    navigate("/");
+
+  };
+
+
 
   return (
     <div className="book-preview">
@@ -53,7 +76,8 @@ const BookPage = () => {
           <p>Due Date: {book.availability.dueDate ? new Date(book.availability.dueDate).toLocaleDateString():"-"}</p>
           <p>Borrower: {book.availability.borrower || "_"}</p>
 
-          <button onClick={handleGoHome}>Back</button>
+          <button onClick={() => navigate("/")}>Back</button>
+          <button onClick ={() => onDeleteClick(book._id)}>delete</button>
         </>
       )}
     </div>
